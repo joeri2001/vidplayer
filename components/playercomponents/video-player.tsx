@@ -118,23 +118,6 @@ export default function VideoPlayer({ videoSrc, subtitles, subtitleOffset, conta
     }
   }
 
-  const handleMouseMove = () => {
-    setIsControlsVisible(true)
-    if (controlsTimeoutRef.current) {
-      clearTimeout(controlsTimeoutRef.current)
-    }
-    controlsTimeoutRef.current = setTimeout(() => {
-      setIsControlsVisible(false)
-    }, 3000)
-  }
-
-  const handleMouseLeave = () => {
-    if (controlsTimeoutRef.current) {
-      clearTimeout(controlsTimeoutRef.current)
-    }
-    setIsControlsVisible(false)
-  }
-
   return (
     <>
       <video
