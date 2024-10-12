@@ -23,7 +23,6 @@ export default function VideoPlayer({ videoSrc, subtitles, subtitleOffset, conta
   const [isControlsVisible] = useState(true)
 
   const videoRef = useRef<HTMLVideoElement>(null)
-  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     const video = videoRef.current
