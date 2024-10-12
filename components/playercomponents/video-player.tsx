@@ -20,7 +20,7 @@ export default function VideoPlayer({ videoSrc, subtitles, subtitleOffset, conta
   const [isMuted, setIsMuted] = useState(false)
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
-  const [isControlsVisible, setIsControlsVisible] = useState(true)
+  const [isControlsVisible] = useState(true)
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
