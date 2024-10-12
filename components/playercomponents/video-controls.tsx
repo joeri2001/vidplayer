@@ -79,7 +79,7 @@ export default function VideoControls({
   };
 
   return (
-    <div className={`absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-75 transition-opacity duration-300 ${isControlsVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-75 rounded-b-md transition-opacity duration-300 ${isControlsVisible ? 'opacity-100' : 'opacity-0'}`}>
       <div 
         className={`relative w-full h-1 bg-gray-600 cursor-pointer group transition-all duration-200 ${isHoveringProgress ? 'h-2' : ''}`}
         onClick={(e) => {

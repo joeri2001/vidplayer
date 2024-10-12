@@ -20,9 +20,10 @@ export default function VideoPlayer({ videoSrc, subtitles, subtitleOffset, conta
   const [isMuted, setIsMuted] = useState(false)
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
-  const [isControlsVisible] = useState(true)
+  const [isControlsVisible, setIsControlsVisible] = useState(true)
 
   const videoRef = useRef<HTMLVideoElement>(null)
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     const video = videoRef.current
@@ -53,6 +54,32 @@ export default function VideoPlayer({ videoSrc, subtitles, subtitleOffset, conta
       video.removeEventListener('play', () => setIsPaused(false))
     }
   }, [subtitles, subtitleOffset])
+
+  useEffect(() => {
+    const handleMouseMove = () => {
+      setIsControlsVisible(true)
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current)
+      }
+      controlsTimeoutRef.current = setTimeout(() => {
+        setIsControlsVisible(false)
+      }, 3000) // Hide controls after 3 seconds of inactivity
+    }
+
+    const container = containerRef.current
+    if (container) {
+      container.addEventListener('mousemove', handleMouseMove)
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('mousemove', handleMouseMove)
+      }
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current)
+      }
+    }
+  }, [containerRef])
 
   const handleSubtitleHover = (e: React.MouseEvent<HTMLSpanElement>) => {
     if (videoRef.current && !isPaused) {
