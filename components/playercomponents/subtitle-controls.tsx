@@ -9,6 +9,18 @@ export default function SubtitleControls({ adjustSubtitles, subtitleOffset }: Su
   return (
     <>
       <div className="mt-2 flex justify-center space-x-1 sm:space-x-2">
+      <button
+          onClick={() => adjustSubtitles(-5)}
+          className="px-1 sm:px-2 py-0.5 sm:py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors text-xs"
+        >
+          -5s
+        </button>
+        <button
+          onClick={() => adjustSubtitles(-1)}
+          className="px-1 sm:px-2 py-0.5 sm:py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors text-xs"
+        >
+          -1s
+        </button>
         <button
           onClick={() => adjustSubtitles(-0.5)}
           className="px-1 sm:px-2 py-0.5 sm:py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors text-xs"
@@ -32,6 +44,18 @@ export default function SubtitleControls({ adjustSubtitles, subtitleOffset }: Su
           className="px-1 sm:px-2 py-0.5 sm:py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors text-xs"
         >
           +0.5s
+        </button>
+        <button
+          onClick={() => adjustSubtitles(1)}
+          className="px-1 sm:px-2 py-0.5 sm:py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors text-xs"
+        >
+          +1s
+        </button>
+        <button
+          onClick={() => adjustSubtitles(5)}
+          className="px-1 sm:px-2 py-0.5 sm:py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors text-xs"
+        >
+          +5s
         </button>
       </div>
       <div className="mt-1 text-center text-xs text-gray-400">
