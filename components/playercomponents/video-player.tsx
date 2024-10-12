@@ -81,6 +81,18 @@ export default function VideoPlayer({ videoSrc, subtitles, subtitleOffset, conta
     }
   }, [containerRef])
 
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement)
+    }
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange)
+    }
+  }, [])
+
   const handleSubtitleHover = (e: React.MouseEvent<HTMLSpanElement>) => {
     if (videoRef.current && !isPaused) {
       videoRef.current.pause()
@@ -129,10 +141,8 @@ export default function VideoPlayer({ videoSrc, subtitles, subtitleOffset, conta
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       containerRef.current?.requestFullscreen()
-      setIsFullscreen(true)
     } else {
       document.exitFullscreen()
-      setIsFullscreen(false)
     }
   }
 
@@ -145,42 +155,44 @@ export default function VideoPlayer({ videoSrc, subtitles, subtitleOffset, conta
   }
 
   return (
-    <>
-      <video
-        ref={videoRef}
-        src={videoSrc}
-        className="w-full rounded-lg cursor-pointer"
-        onClick={togglePlay}
-      >
-        Your browser does not support the video tag.
-      </video>
-      <div
-        className="absolute left-0 right-0 bottom-0 flex justify-center items-end pointer-events-none"
-      >
-        {currentSubtitle && (
-          <span
-            className="inline-block bg-black bg-opacity-75 text-white px-2 sm:px-4 py-1 sm:py-2 rounded cursor-pointer select-text pointer-events-auto transition-all duration-300 ease-in-out text-xs sm:text-base fullscreen-subtitle-container:text-xl sm:fullscreen-subtitle-container:text-2xl mb-12 sm:mb-16"
-            onMouseEnter={handleSubtitleHover}
-            onMouseLeave={handleSubtitleLeave}
-          >
-            {currentSubtitle.text}
-          </span>
-        )}
+    <div className={`relative w-full ${isFullscreen ? 'h-screen' : 'pt-[56.25%]'}`}>
+      <div className={`${isFullscreen ? 'fixed inset-0' : 'absolute top-0 left-0 w-full h-full'} flex items-center justify-center bg-black`}>
+        <video
+          ref={videoRef}
+          src={videoSrc}
+          className="w-full h-full object-contain cursor-pointer"
+          onClick={togglePlay}
+        >
+          Your browser does not support the video tag.
+        </video>
+        <div
+          className="absolute left-0 right-0 bottom-0 flex justify-center items-end pointer-events-none"
+        >
+          {currentSubtitle && (
+            <span
+              className="inline-block bg-black bg-opacity-75 text-white px-2 sm:px-4 py-1 sm:py-2 rounded cursor-pointer select-text pointer-events-auto transition-all duration-300 ease-in-out text-xs sm:text-base fullscreen:text-xl sm:fullscreen:text-2xl mb-12 sm:mb-16"
+              onMouseEnter={handleSubtitleHover}
+              onMouseLeave={handleSubtitleLeave}
+            >
+              {currentSubtitle.text}
+            </span>
+          )}
+        </div>
+        <VideoControls
+          isPaused={isPaused}
+          isMuted={isMuted}
+          isFullscreen={isFullscreen}
+          volume={volume}
+          progress={progress}
+          duration={duration}
+          isControlsVisible={isControlsVisible}
+          togglePlay={togglePlay}
+          toggleMute={toggleMute}
+          toggleFullscreen={toggleFullscreen}
+          handleVolumeChange={handleVolumeChange}
+          handleProgressChange={handleProgressChange}
+        />
       </div>
-      <VideoControls
-        isPaused={isPaused}
-        isMuted={isMuted}
-        isFullscreen={isFullscreen}
-        volume={volume}
-        progress={progress}
-        duration={duration}
-        isControlsVisible={isControlsVisible}
-        togglePlay={togglePlay}
-        toggleMute={toggleMute}
-        toggleFullscreen={toggleFullscreen}
-        handleVolumeChange={handleVolumeChange}
-        handleProgressChange={handleProgressChange}
-      />
-    </>
+    </div>
   )
 }
